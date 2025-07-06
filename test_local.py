@@ -63,7 +63,7 @@ def test_basic_functionality():
         return False
 
 def test_api_keys():
-    """Test if API keys are valid"""
+    """Warn if API keys are missing, but do not fail the build"""
     print("\n🔑 Testing API Keys...")
     print("=" * 40)
     
@@ -72,24 +72,24 @@ def test_api_keys():
     if openai_key:
         print("✅ OpenAI API Key: Configured")
     else:
-        print("⚠️ OpenAI API Key: Not configured")
+        print("⚠️ OpenAI API Key: Not configured (warning only)")
     
     # Test Hugging Face API
     hf_key = os.getenv('HUGGINGFACE_API_KEY')
     if hf_key:
         print("✅ Hugging Face API Key: Configured")
     else:
-        print("⚠️ Hugging Face API Key: Not configured")
+        print("⚠️ Hugging Face API Key: Not configured (warning only)")
     
     # Test Cohere API
     cohere_key = os.getenv('COHERE_API_KEY')
     if cohere_key:
         print("✅ Cohere API Key: Configured")
     else:
-        print("⚠️ Cohere API Key: Not configured")
+        print("⚠️ Cohere API Key: Not configured (warning only)")
 
 def test_database_connection():
-    """Test database connection"""
+    """Warn if database URL is missing, but do not fail the build"""
     print("\n🗄️ Testing Database Connection...")
     print("=" * 40)
     
@@ -97,7 +97,7 @@ def test_database_connection():
     if db_url:
         print("✅ Database URL: Configured")
     else:
-        print("⚠️ Database URL: Not configured")
+        print("⚠️ Database URL: Not configured (warning only)")
 
 if __name__ == "__main__":
     print("🧪 Running AI Chatbot Tests...")
