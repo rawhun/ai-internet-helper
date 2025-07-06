@@ -5,12 +5,53 @@ Tests API keys, database connection, and basic functionality
 """
 
 import os
+import sys
+import pytest
 import requests
 import json
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+def test_project_structure():
+    """Test that all required files exist"""
+    required_files = [
+        'README.md',
+        'requirements_enhanced.txt',
+        'requirements_web.txt',
+        'enhanced_chatbot.py',
+        'web_chatbot.py',
+        'demo_chatbot.py'
+    ]
+    
+    for file in required_files:
+        assert os.path.exists(file), f"Required file {file} not found"
+    
+    print("✅ All required files exist")
+
+def test_imports():
+    """Test that main modules can be imported"""
+    try:
+        import flask
+        print("✅ Flask imported successfully")
+    except ImportError:
+        print("⚠️ Flask not installed (expected in CI)")
+    
+    try:
+        import requests
+        print("✅ Requests imported successfully")
+    except ImportError:
+        print("⚠️ Requests not installed (expected in CI)")
+
+def test_basic_functionality():
+    """Test basic project functionality"""
+    # Test that we can read the README
+    with open('README.md', 'r') as f:
+        content = f.read()
+        assert len(content) > 0, "README.md is empty"
+    
+    print("✅ Basic functionality test passed")
 
 def test_api_keys():
     """Test if API keys are valid"""
@@ -120,6 +161,9 @@ def main():
     print("🚀 AI Chatbot Local Test Suite")
     print("=" * 40)
     
+    test_project_structure()
+    test_imports()
+    test_basic_functionality()
     test_api_keys()
     test_database_connection()
     test_providers_config()

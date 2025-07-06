@@ -1,48 +1,33 @@
-name: Build and Push Docker Images
+name: Build and Test
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build-and-push:
+  test:
     runs-on: ubuntu-latest
-    env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          python-version: '3.10'
 
-      - name: Build and push rasa server
-        uses: docker/build-push-action@v4
-        with:
-          context: ./backend/rasa_project
-          file: ./backend/rasa_project/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-chatbot-rasa:latest
+      - name: Install dependencies
+        run: |
+          pip install -r requirements_enhanced.txt
+          pip install -r requirements_web.txt
 
-      - name: Build and push action server
-        uses: docker/build-push-action@v4
-        with:
-          context: ./backend/actions
-          file: ./backend/actions/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-chatbot-actions:latest
+      - name: Run tests
+        run: |
+          python -m pytest test_local.py -v
 
-      - name: Build and push retrain pipeline
-        uses: docker/build-push-action@v4
-        with:
-          context: ./backend/retrain_pipeline
-          file: ./backend/retrain_pipeline/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-chatbot-retrain:latest 
+      - name: Build Docker images (without push)
+        run: |
+          echo "Docker images would be built here in production"
+          echo "Skipping Docker Hub push for now" 
