@@ -1,0 +1,22 @@
+# List of AI providers for fallback strategy
+# Add/remove providers as needed
+providers:
+  - name: openai
+    type: openai
+    api_key_env: OPENAI_API_KEY
+    endpoint: https://api.openai.com/v1/chat/completions
+    model: gpt-3.5-turbo
+    enabled: true
+  - name: huggingface
+    type: huggingface
+    api_key_env: HUGGINGFACE_API_KEY
+    endpoint: https://api-inference.huggingface.co/models/distilbert-base-uncased
+    model: distilbert-base-uncased
+    enabled: true
+  - name: cohere
+    type: cohere
+    api_key_env: COHERE_API_KEY
+    endpoint: https://api.cohere.ai/v1/generate
+    model: command-xlarge-nightly
+    enabled: true
+# To add a new provider, copy a block above and update fields. 

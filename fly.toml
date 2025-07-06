@@ -1,0 +1,15 @@
+# Render deployment config
+# This file is used by Render to configure the deployment
+# Render automatically detects and deploys from this config
+
+# Environment variables will be set in Render dashboard
+# DATABASE_URL, OPENAI_API_KEY, HUGGINGFACE_API_KEY, COHERE_API_KEY
+
+# Render automatically handles:
+# - Port mapping (exposes PORT env var)
+# - HTTPS/SSL
+# - Load balancing
+# - Auto-scaling
+# - GitHub integration for auto-deploy
+
+# No additional config needed - Render handles everything automatically

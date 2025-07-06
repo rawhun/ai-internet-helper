@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: ai-chatbot-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: rasa run --enable-api --cors '*' --port $PORT & uvicorn health:app --host 0.0.0.0 --port 8000
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-chatbot-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: HUGGINGFACE_API_KEY
+        sync: false
+      - key: COHERE_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+databases:
+  - name: ai-chatbot-db
+    databaseName: ai_chatbot
+    user: ai_chatbot_user 

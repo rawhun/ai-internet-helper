@@ -1,0 +1,33 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - ask_provider_status
+  - fallback
+
+entities:
+  - provider
+
+slots:
+  provider:
+    type: text
+    influence_conversation: false
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you today?"
+  utter_goodbye:
+    - text: "Goodbye! Have a great day!"
+  utter_fallback:
+    - text: "Sorry, I didn't get that. Can you rephrase?"
+  utter_provider_status:
+    - text: "Here is the current status of all AI providers."
+
+actions:
+  - action_fallback_provider
+  - action_check_providers
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true 

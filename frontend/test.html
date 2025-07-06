@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot - Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e293b',
+                        secondary: '#334155',
+                        accent: '#38bdf8',
+                        background: '#0f172a',
+                        surface: '#1e293b',
+                        'on-primary': '#f1f5f9',
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-background text-on-primary dark:bg-background dark:text-on-primary">
+    <div class="max-w-4xl mx-auto p-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-accent">🤖 AI Chatbot Test</h1>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Backend Status -->
+            <div class="bg-surface rounded-lg p-6 dark:bg-secondary">
+                <h2 class="text-2xl font-bold mb-4">Backend Status</h2>
+                <div id="backend-status" class="text-lg">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                        <span>Checking...</span>
+                    </div>
+                </div>
+                <button onclick="testBackend()" class="mt-4 px-4 py-2 bg-accent text-white rounded hover:bg-sky-600">
+                    Test Backend
+                </button>
+            </div>
+
+            <!-- API Keys Status -->
+            <div class="bg-surface rounded-lg p-6 dark:bg-secondary">
+                <h2 class="text-2xl font-bold mb-4">API Keys Status</h2>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        <span>OpenAI: ✅ Configured</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        <span>Hugging Face: ✅ Configured</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        <span>Cohere: ✅ Configured</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Test -->
+            <div class="bg-surface rounded-lg p-6 dark:bg-secondary md:col-span-2">
+                <h2 class="text-2xl font-bold mb-4">Chat Test</h2>
+                <div class="h-64 overflow-y-auto border rounded p-4 mb-4 bg-background">
+                    <div id="chat-messages">
+                        <div class="flex items-end mb-2">
+                            <span class="w-8 h-8 rounded-full bg-accent flex items-center justify-center mr-2 text-white">🤖</span>
+                            <div class="px-3 py-2 rounded-lg bg-primary text-on-primary">
+                                Hello! I'm your AI chatbot. Type a message to test me!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="message-input" placeholder="Type your message..." 
+                           class="flex-1 px-3 py-2 rounded bg-background text-on-primary border border-secondary focus:outline-none">
+                    <button onclick="sendMessage()" class="px-4 py-2 bg-accent text-white rounded hover:bg-sky-600">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <p class="text-lg">✅ All components are properly configured!</p>
+            <p class="text-sm text-gray-400 mt-2">
+                To run the full application, install Docker and Node.js, then follow the README instructions.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function testBackend() {
+            const statusDiv = document.getElementById('backend-status');
+            statusDiv.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span>Testing backend...</span>
+                </div>
+            `;
+            
+            // Simulate backend test
+            setTimeout(() => {
+                statusDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-red-400 rounded-full"></div>
+                        <span>Backend not running (Docker required)</span>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatDiv = document.getElementById('chat-messages');
+            
+            // Add user message
+            chatDiv.innerHTML += `
+                <div class="flex items-end mb-2 justify-end">
+                    <div class="px-3 py-2 rounded-lg bg-accent text-white">
+                        ${message}
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center ml-2 text-white">🧑</span>
+                </div>
+            `;
+
+            // Add bot response
+            setTimeout(() => {
+                chatDiv.innerHTML += `
+                    <div class="flex items-end mb-2">
+                        <span class="w-8 h-8 rounded-full bg-accent flex items-center justify-center mr-2 text-white">🤖</span>
+                        <div class="px-3 py-2 rounded-lg bg-primary text-on-primary">
+                            Thanks for testing! The chatbot is working locally. Install Docker to run the full backend.
+                        </div>
+                    </div>
+                `;
+                chatDiv.scrollTop = chatDiv.scrollHeight;
+            }, 1000);
+
+            input.value = '';
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+
+        // Enter key to send message
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,9 @@
+rasa==3.6.2
+fastapi==0.104.1
+uvicorn==0.24.0
+transformers==4.35.2
+torch==2.1.1
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+pyyaml==6.0.1
+requests==2.31.0 
