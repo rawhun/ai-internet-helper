@@ -14,7 +14,7 @@ Your AI chatbot is properly configured and ready to deploy!
 - **Cohere**: `I013...` (configured)
 
 ### 🗄️ **Database** ✅
-- **PostgreSQL**: Connected to `dpg-d1lan8fdiees73fep8f0-a`
+- **PostgreSQL**: Connected to `your_database_url`
 - **Status**: Ready for chat logs and retraining data
 
 ### 🤖 **AI Providers** ✅
