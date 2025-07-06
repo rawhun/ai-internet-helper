@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test, and Deploy
 
 on:
   push:
@@ -27,7 +27,46 @@ jobs:
         run: |
           python -m pytest test_local.py -v
 
-      - name: Build Docker images (without push)
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push rasa server
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend/rasa_project
+          file: ./backend/rasa_project/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-chatbot-rasa:latest
+
+      - name: Build and push action server
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend/actions
+          file: ./backend/actions/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-chatbot-actions:latest
+
+  docker-skip:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ secrets.DOCKERHUB_USERNAME == '' || secrets.DOCKERHUB_TOKEN == '' }}
+    steps:
+      - name: Skip Docker build
         run: |
-          echo "Docker images would be built here in production"
-          echo "Skipping Docker Hub push for now" 
+          echo "Docker Hub secrets not configured"
+          echo "Skipping Docker image builds"
+          echo "To enable Docker builds, add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN secrets" 
