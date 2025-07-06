@@ -8,10 +8,14 @@ import os
 import sys
 import requests
 import json
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables (optional)
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    print("⚠️ python-dotenv not installed (optional)")
+    # Continue without dotenv
 
 def test_project_structure():
     """Test that all required files exist"""
