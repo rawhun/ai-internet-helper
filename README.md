@@ -210,4 +210,4 @@ If you encounter any issues or have questions:
 
 **Built with ❤️ by rawhun**
 
-*Connect with me: txrun@rediffmail.com*
+*Connect with me: connect.txrun@rediffmail.com*
