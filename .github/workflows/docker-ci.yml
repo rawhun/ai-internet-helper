@@ -25,7 +25,7 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m pytest test_local.py -v
+          python test_local.py
 
   docker-build:
     runs-on: ubuntu-latest
